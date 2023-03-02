@@ -49,7 +49,10 @@ curl https://api.openai.com/v1/completions
 */
 func Completions(role string, msg string) (string, error) {
 	msgMap := map[string]string{}
-	msgMap["role"] = role
+	msgMap["role"] = "user"
+	if role == "Fizz_kai" {
+		msgMap["role"] = "system"
+	}
 	msgMap["content"] = msg
 	msgArr := []map[string]string{}
 	msgArr = append(msgArr, msgMap)
