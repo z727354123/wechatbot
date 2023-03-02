@@ -47,9 +47,9 @@ curl https://api.openai.com/v1/completions
 -H "Authorization: Bearer your chatGPT key"
 -d '{"model": "text-davinci-003", "prompt": "give me good song", "temperature": 0, "max_tokens": 7}'
 */
-func Completions(msg string) (string, error) {
+func Completions(role string, msg string) (string, error) {
 	msgMap := map[string]string{}
-	msgMap["role"] = "user"
+	msgMap["role"] = role
 	msgMap["content"] = msg
 	msgArr := []map[string]string{}
 	msgArr = append(msgArr, msgMap)
@@ -92,7 +92,7 @@ func Completions(msg string) (string, error) {
 	var reply string
 	if len(gptResponseBody.Choices) > 0 {
 		for _, v := range gptResponseBody.Choices {
-			reply = v["text"].(string)
+			reply = v["message"].(map[string]string)["content"]
 			break
 		}
 	}
