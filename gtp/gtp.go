@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-const BASEURL = "https://api.openai.com/v1/"
+const BASEURL = "https://api.openai.com/v1/chat/"
 
 // ChatGPTResponseBody 请求体
 type ChatGPTResponseBody struct {
@@ -26,13 +26,14 @@ type ChoiceItem struct {
 
 // ChatGPTRequestBody 响应体
 type ChatGPTRequestBody struct {
-	Model            string  `json:"model"`
-	Prompt           string  `json:"prompt"`
-	MaxTokens        int     `json:"max_tokens"`
-	Temperature      float32 `json:"temperature"`
-	TopP             int     `json:"top_p"`
-	FrequencyPenalty int     `json:"frequency_penalty"`
-	PresencePenalty  int     `json:"presence_penalty"`
+	Model string `json:"model"`
+	//Prompt           string  `json:"prompt"`
+	//MaxTokens        int     `json:"max_tokens"`
+	//Temperature      float32 `json:"temperature"`
+	//TopP             int     `json:"top_p"`
+	//FrequencyPenalty int     `json:"frequency_penalty"`
+	//PresencePenalty  int     `json:"presence_penalty"`
+	Messages []map[string]string `json:"messages"`
 }
 
 // Completions gtp文本模型回复
@@ -40,15 +41,21 @@ type ChatGPTRequestBody struct {
 //-H "Content-Type: application/json"
 //-H "Authorization: Bearer your chatGPT key"
 //-d '{"model": "text-davinci-003", "prompt": "give me good song", "temperature": 0, "max_tokens": 7}'
+/**
+curl https://api.openai.com/v1/completions
+-H "Content-Type: application/json"
+-H "Authorization: Bearer your chatGPT key"
+-d '{"model": "text-davinci-003", "prompt": "give me good song", "temperature": 0, "max_tokens": 7}'
+*/
 func Completions(msg string) (string, error) {
+	msgMap := map[string]string{}
+	msgMap["role"] = "user"
+	msgMap["content"] = msg
+	msgArr := []map[string]string{}
+	msgArr = append(msgArr, msgMap)
 	requestBody := ChatGPTRequestBody{
-		Model:            "text-davinci-003",
-		Prompt:           msg,
-		MaxTokens:        2048,
-		Temperature:      0.7,
-		TopP:             1,
-		FrequencyPenalty: 0,
-		PresencePenalty:  0,
+		Model:    "gpt-3.5-turbo",
+		Messages: msgArr,
 	}
 	requestData, err := json.Marshal(requestBody)
 
