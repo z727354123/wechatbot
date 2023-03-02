@@ -95,7 +95,7 @@ func Completions(role string, msg string) (string, error) {
 	var reply string
 	if len(gptResponseBody.Choices) > 0 {
 		for _, v := range gptResponseBody.Choices {
-			reply = v["message"].(map[string]string)["content"]
+			reply = v["message"].(map[string]interface{})["content"].(string)
 			break
 		}
 	}
