@@ -19,6 +19,7 @@ type ChatGPTResponseBody struct {
 	Model   string                   `json:"model"`
 	Choices []map[string]interface{} `json:"choices"`
 	Usage   map[string]interface{}   `json:"usage"`
+	User    string                   `josn:"user"`
 }
 
 type ChoiceItem struct {
@@ -59,6 +60,7 @@ func Completions(role string, msg string) (string, error) {
 	requestBody := ChatGPTRequestBody{
 		Model:    "gpt-3.5-turbo",
 		Messages: msgArr,
+		User: role
 	}
 	requestData, err := json.Marshal(requestBody)
 
